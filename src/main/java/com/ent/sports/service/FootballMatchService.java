@@ -20,7 +20,7 @@ public interface FootballMatchService extends IService<FootballMatch> {
      * @param visitingTeamScore
      * @return
      */
-    boolean updateScore(Long id, Integer homeTeamScore,Integer visitingTeamScore);
+    boolean updateScore(Long id, Integer homeTeamScore, Integer visitingTeamScore);
 
     /**
      * 添加赛事
