@@ -24,8 +24,8 @@ import javax.validation.Valid;
 import java.util.List;
 
 @Slf4j
-@Api(tags = "黑名单")
 @RestController
+@Api(tags = "黑名单")
 @RequestMapping("/manage/blacklist")
 public class BlacklistController {
 

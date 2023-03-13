@@ -39,8 +39,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Slf4j
-@Api(tags = "登录")
 @RestController
+@Api(tags = "登录")
 @RequestMapping("/player/website")
 public class WebsiteApi {
 

@@ -17,14 +17,13 @@ import javax.validation.Valid;
 import java.util.List;
 
 @Slf4j
-@Api(tags = "足球赛事")
 @RestController
+@Api(tags = "足球赛事")
 @RequestMapping("/player/footballMatch")
 public class FootballMatchApi {
 
     @Autowired
     private FootballMatchService footballMatchService;
-
 
     @PostMapping("/getById")
     @ApiOperation(value = "根据id查询赛事详情", notes = "根据id查询赛事详情")

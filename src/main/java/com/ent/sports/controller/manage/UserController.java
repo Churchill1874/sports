@@ -27,8 +27,8 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 import java.time.LocalDateTime;
 
-@Api(tags = "用户")
 @RestController
+@Api(tags = "用户")
 @RequestMapping("/manage/user")
 public class UserController {
 

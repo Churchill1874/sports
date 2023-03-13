@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
-@Api(tags = "验证码")
 @RestController
+@Api(tags = "验证码")
 @RequestMapping("/manage/verificationCode")
 public class VerificationCodeController {
 

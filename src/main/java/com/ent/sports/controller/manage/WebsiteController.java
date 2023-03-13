@@ -31,8 +31,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
-@Api(tags = "登录")
 @RestController
+@Api(tags = "登录")
 @RequestMapping("/manage/website")
 public class WebsiteController {
 

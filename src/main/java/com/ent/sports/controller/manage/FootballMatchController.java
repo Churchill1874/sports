@@ -25,8 +25,8 @@ import javax.validation.Valid;
 import java.time.LocalDateTime;
 
 @Slf4j
-@Api(tags = "足球赛事")
 @RestController
+@Api(tags = "足球赛事")
 @RequestMapping("/manage/footballMatch")
 public class FootballMatchController {
 

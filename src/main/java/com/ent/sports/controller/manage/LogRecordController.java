@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
-@Api(tags = "日志")
 @RestController
+@Api(tags = "日志")
 @RequestMapping("/manage/logRecord")
 public class LogRecordController {
 
