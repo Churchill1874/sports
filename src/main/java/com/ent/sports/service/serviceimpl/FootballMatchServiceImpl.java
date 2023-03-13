@@ -32,8 +32,8 @@ public class FootballMatchServiceImpl extends ServiceImpl<FootballMatchMapper, F
     @CacheEvict(value = "footballMatch", allEntries = true)
     public boolean updateScore(Long id, Integer homeTeamScore, Integer visitingTeamScore) {
         UpdateWrapper<FootballMatch> updateWrapper = new UpdateWrapper<>();
-        updateWrapper.set(homeTeamScore != null, "home_team_score", homeTeamScore);
-        updateWrapper.set(visitingTeamScore != null, "visiting_team_score", visitingTeamScore);
+        updateWrapper.set("home_team_score", homeTeamScore);
+        updateWrapper.set("visiting_team_score", visitingTeamScore);
         updateWrapper.set("create_name", TokenTools.getToken().getName());
         updateWrapper.eq("id", id);
         return update(updateWrapper);
