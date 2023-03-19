@@ -4,15 +4,17 @@ import com.baomidou.mybatisplus.extension.api.R;
 import com.ent.sports.common.constant.LogTypeEnum;
 import com.ent.sports.common.tools.GenerateTools;
 import com.ent.sports.common.tools.HttpTools;
+import com.ent.sports.entity.Blacklist;
+import com.ent.sports.service.BlacklistService;
 import com.ent.sports.service.EhcacheService;
 import com.ent.sports.service.LogRecordService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.Cache;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
@@ -27,14 +29,18 @@ public class VerificationCodeController {
     @Autowired
     private LogRecordService logRecordService;
 
+    @Autowired
+    private BlacklistService blacklistService;
+
     @PostMapping("/get")
     @ApiOperation(value = "获取验证码", notes = "获取验证码")
     public synchronized R<String> get() {
-        //todo 添加频繁点击校验 10分钟内点击10次 检查警告日志 如果该ip已经存在警告则拉黑 不存在则新加警告日志
-
+        //添加频繁点击校验 3秒内点击超过30次 检查警告日志 如果该ip已经存在警告则拉黑 不存在则新加警告日志
+        ehcacheService.checkIp3SecondsClick(30);
+        //获取验证码
         String verificationCode = GenerateTools.getVerificationCode();
         ehcacheService.getVerificationCodeCache().put(HttpTools.getIp(), verificationCode);
-        logRecordService.insert(GenerateTools.createLog(LogTypeEnum.OPERATION,"获取验证码"));
+        logRecordService.insert(GenerateTools.createLog(LogTypeEnum.OPERATION, "获取验证码"));
         return R.ok(verificationCode);
     }
 

@@ -30,8 +30,9 @@ public class VerificationCodeApi {
     @PostMapping("/get")
     @ApiOperation(value = "获取验证码", notes = "获取验证码")
     public synchronized R<String> get() {
-        //todo 添加频繁点击校验 10分钟内点击10次 检查警告日志 如果该ip已经存在警告则拉黑 不存在则新加警告日志
-
+        //添加频繁点击校验 3秒内点击超过30次 检查警告日志 如果该ip已经存在警告则拉黑 不存在则新加警告日志
+        ehcacheService.checkIp3SecondsClick(30);
+        //获取验证码
         String verificationCode = GenerateTools.getVerificationCode();
         ehcacheService.getVerificationCodeCache().put(HttpTools.getIp(), verificationCode);
         logRecordService.insert(GenerateTools.createLog(LogTypeEnum.OPERATION,"获取验证码"));

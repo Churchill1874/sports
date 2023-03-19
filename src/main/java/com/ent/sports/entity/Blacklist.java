@@ -20,4 +20,7 @@ public class Blacklist extends BaseInfo implements Serializable {
     @TableField("phone_number")
     private String phoneNumber;
 
+    @TableField("remarks")
+    private String remarks;
+
 }

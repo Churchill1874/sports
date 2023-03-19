@@ -43,4 +43,11 @@ public interface EhcacheService {
      */
     Cache getFootballMatchCache();
 
+    /**
+     * 校验ip 3秒内频繁点击超过指定次数
+     * @param limitCount
+     * @return
+     */
+    boolean checkIp3SecondsClick(Integer limitCount);
+
 }
