@@ -52,7 +52,7 @@ public class EhcacheServiceImpl implements EhcacheService {
     }
 
     @Override
-    public boolean checkIp3SecondsClick(Integer limitCount) {
+    public boolean checkIp3SecondsClick(Integer limitCount, String remarks) {
         String ip = HttpTools.getIp();
         Cache cache = this.get3SecondLockCache();
         Integer reqCount = cache.get(ip, Integer.class);
@@ -60,6 +60,7 @@ public class EhcacheServiceImpl implements EhcacheService {
             if (reqCount >= limitCount) {
                 Blacklist blacklist = new Blacklist();
                 blacklist.setIp(ip);
+                blacklist.setRemarks(remarks);
                 blacklistService.insert(blacklist);
                 return true;
             } else {

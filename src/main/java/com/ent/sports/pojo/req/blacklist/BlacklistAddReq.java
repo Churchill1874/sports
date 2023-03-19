@@ -1,5 +1,6 @@
 package com.ent.sports.pojo.req.blacklist;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -15,5 +16,8 @@ public class BlacklistAddReq implements Serializable {
 
     @ApiModelProperty("手机号")
     private String phoneNumber;
+
+    @TableField("remarks")
+    private String remarks;
 
 }

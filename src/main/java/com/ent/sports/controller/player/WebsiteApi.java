@@ -188,19 +188,24 @@ public class WebsiteApi {
         if (CollectionUtils.isNotEmpty(registerLogListRecord)) {
             int count = registerLogListRecord.size();
             if (count >= limitCount) {
-                logRecordService.insert(GenerateTools.createWarnLog("注册次数过限",ip));
+                final String warnContent = "注册次数过限";
+                logRecordService.insert(GenerateTools.createWarnLog(warnContent,ip));
 
                 //校验注册次数过限警告次数,是否大于等于20次,如果大于将ip拉黑
-                LogRecord logRecordInfo = new LogRecord();
-                logRecordInfo.setType(LogTypeEnum.WARN.getValue());
-                logRecordInfo.setIp(ip);
-                List<LogRecord> registerWarnLogListRecord = logRecordService.getList(logRecordInfo);
+                LogRecord logRecord = new LogRecord();
+                logRecord.setType(LogTypeEnum.WARN.getValue());
+                logRecord.setIp(ip);
+                logRecord.setMessage(warnContent);
+                List<LogRecord> registerWarnLogListRecord = logRecordService.getList(logRecord);
+
                 if (CollectionUtils.isNotEmpty(registerWarnLogListRecord) && registerWarnLogListRecord.size() > 20){
                     Blacklist blacklist = new Blacklist();
                     blacklist.setIp(ip);
+                    blacklist.setRemarks("大量注册账号");
                     blacklistService.insert(blacklist);
+                    throw new DataException("注册次数已达上限,若仍需注册请联系管理员");
                 }
-                throw new DataException("注册次数已达上限,若仍需注册请联系管理员");
+
             }
         }
     }
