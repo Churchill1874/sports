@@ -29,9 +29,6 @@ public class VerificationCodeController {
     @Autowired
     private LogRecordService logRecordService;
 
-    @Autowired
-    private BlacklistService blacklistService;
-
     @PostMapping("/get")
     @ApiOperation(value = "获取验证码", notes = "获取验证码")
     public synchronized R<String> get() {

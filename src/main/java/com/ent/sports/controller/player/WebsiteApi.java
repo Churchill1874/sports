@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.extension.api.R;
 import com.ent.sports.common.constant.LogTypeEnum;
 import com.ent.sports.common.constant.RoleEnum;
-import com.ent.sports.common.constant.UserStatusEnum;
 import com.ent.sports.common.exception.AccountOrPasswordException;
 import com.ent.sports.common.exception.AuthException;
 import com.ent.sports.common.exception.DataException;
@@ -35,7 +34,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Slf4j
@@ -97,12 +95,12 @@ public class WebsiteApi {
         checkLoginCache(user.getAccount());
 
         //生成token并返回
-        Token token = createToken(user);
+        Token token = GenerateTools.createToken(user);
         String tokenId = GenerateTools.createTokenId(user.getAccount());
         ehcacheService.getTokenCache().put(tokenId, token);
 
         //记录登录日志
-        logRecordService.insert(GenerateTools.createLoginLog());
+        logRecordService.insert(GenerateTools.createLoginLog(token.getPlatform()));
 
         //删除使用过的验证码缓存
         ehcacheService.getVerificationCodeCache().evict(HttpTools.getIp());
@@ -121,18 +119,6 @@ public class WebsiteApi {
                 }
             });
         }
-    }
-
-    //生成token对象
-    private Token createToken(User user) {
-        Token token = new Token();
-        token.setName(user.getName());
-        token.setLoginTime(LocalDateTime.now());
-        token.setRole(user.getRole());
-        token.setAccount(user.getAccount());
-        token.setId(user.getId());
-        token.setStatus(user.getStatus());
-        return token;
     }
 
     @PostMapping("/register")
@@ -164,15 +150,14 @@ public class WebsiteApi {
         user.setBalance(BigDecimal.ZERO);
         user.setRole(RoleEnum.PLAYER.getCode());
         user.setLevel(1);
-        user.setCreateTime(LocalDateTime.now());
         user.setAddress(HttpTools.getCityData());
-        user.setStatus(UserStatusEnum.NORMAL.getValue());
+        user.setPlatform(HttpTools.getPlatform());
         boolean flag = userService.add(user);
 
         //如果创建用户成功
         if (flag) {
             //记录登录日志
-            logRecordService.insert(GenerateTools.registerLog(user.getName(), user.getAccount()));
+            logRecordService.insert(GenerateTools.registerLog(user.getName(), user.getAccount(), user.getPlatform()));
         }
 
         return R.ok(null);
@@ -189,7 +174,7 @@ public class WebsiteApi {
             int count = registerLogListRecord.size();
             if (count >= limitCount) {
                 final String warnContent = "注册次数过限";
-                logRecordService.insert(GenerateTools.createWarnLog(warnContent,ip));
+                logRecordService.insert(GenerateTools.createWarnLog(warnContent, ip, HttpTools.getPlatform()));
 
                 //校验注册次数过限警告次数,是否大于等于20次,如果大于将ip拉黑
                 LogRecord logRecord = new LogRecord();
@@ -198,7 +183,7 @@ public class WebsiteApi {
                 logRecord.setMessage(warnContent);
                 List<LogRecord> registerWarnLogListRecord = logRecordService.getList(logRecord);
 
-                if (CollectionUtils.isNotEmpty(registerWarnLogListRecord) && registerWarnLogListRecord.size() > 20){
+                if (CollectionUtils.isNotEmpty(registerWarnLogListRecord) && registerWarnLogListRecord.size() > 20) {
                     Blacklist blacklist = new Blacklist();
                     blacklist.setIp(ip);
                     blacklist.setRemarks("大量注册账号");

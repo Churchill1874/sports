@@ -65,5 +65,9 @@ public class User extends BaseInfo implements Serializable {
     @ApiModelProperty("角色")
     private Integer role;
 
+    @TableField("platform")
+    @ApiModelProperty("平台")
+    private Integer platform;
+
 
 }

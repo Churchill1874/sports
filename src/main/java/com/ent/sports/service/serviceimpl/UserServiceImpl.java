@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.ent.sports.common.constant.UserStatusEnum;
+import com.ent.sports.common.tools.HttpTools;
 import com.ent.sports.entity.User;
 import com.ent.sports.mapper.UserMapper;
 import com.ent.sports.pojo.req.user.UserPageReq;
@@ -15,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Slf4j
@@ -27,6 +30,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean add(User po) {
+        po.setCreateTime(LocalDateTime.now());
+        po.setStatus(UserStatusEnum.NORMAL.getValue());
         return this.save(po);
     }
 
@@ -90,6 +95,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         queryWrapper.eq(po.getStatus() != null, "status", po.getStatus());
         //角色
         queryWrapper.eq(po.getRole() != null, "role", po.getRole());
+        //平台
+        queryWrapper.eq(po.getPlatform() != null, "platform", po.getPlatform());
         //创建时间
         queryWrapper.orderByDesc("create_time");
         return page(iPage, queryWrapper);
@@ -114,6 +121,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         queryWrapper.eq(po.getStatus() != null, "status", po.getStatus());
         //角色
         queryWrapper.eq(po.getRole() != null, "role", po.getRole());
+        //平台
+        queryWrapper.eq(po.getPlatform() != null, "platform", po.getPlatform());
         //创建时间
         queryWrapper.orderByDesc("create_time");
         return list(queryWrapper);
@@ -135,7 +144,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public User findByPhoneNumber(String phoneNumber) {
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("phone_number",phoneNumber);
+        queryWrapper.eq("phone_number", phoneNumber);
         return getOne(queryWrapper);
     }
 

@@ -35,5 +35,8 @@ public class UserPageReq extends Page implements Serializable {
     @ApiModelProperty("角色 0机器人,1玩家,2管理员,3超级管理员")
     private Integer role;
 
+    @ApiModelProperty("平台")
+    private Integer platform;
+
 
 }

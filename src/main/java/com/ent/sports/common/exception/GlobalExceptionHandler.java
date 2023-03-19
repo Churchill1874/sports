@@ -3,6 +3,8 @@ package com.ent.sports.common.exception;
 import com.baomidou.mybatisplus.extension.api.R;
 import com.ent.sports.common.constant.LogTypeEnum;
 import com.ent.sports.common.tools.GenerateTools;
+import com.ent.sports.common.tools.HttpTools;
+import com.ent.sports.common.tools.TokenTools;
 import com.ent.sports.entity.LogRecord;
 import com.ent.sports.service.LogRecordService;
 import lombok.extern.slf4j.Slf4j;
@@ -67,11 +69,16 @@ public class GlobalExceptionHandler {
         return R.failed(e.toString()).setCode(-1);
     }
 
-
-
     //插入日志
     private void insertErrorLog(String message,LogTypeEnum logTypeEnum){
         LogRecord logRecord = GenerateTools.createLog(logTypeEnum,message);
+        Integer platform = null;
+        try {
+            platform= TokenTools.getToken().getPlatform();
+        }catch (TokenException e){
+            platform = HttpTools.getPlatform();
+        }
+        logRecord.setPlatform(platform);
         logRecordService.insert(logRecord);
     }
 

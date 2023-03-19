@@ -26,4 +26,7 @@ public class LogPageReq extends Page implements Serializable {
     @ApiModelProperty("账号")
     private Integer account;
 
+    @ApiModelProperty("平台")
+    private Integer platform;
+
 }

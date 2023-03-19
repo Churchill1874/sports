@@ -46,6 +46,10 @@ public class UserController {
     @PostMapping("/page")
     @ApiOperation(value = "分页查询用户", notes = "分页查询用户")
     public R<IPage<User>> page(@RequestBody @Valid UserPageReq req) {
+        Integer platform = TokenTools.getToken().getPlatform();
+        if (platform != 0){
+            req.setPlatform(platform);
+        }
         return R.ok(userService.page(req));
     }
 
@@ -57,10 +61,9 @@ public class UserController {
         BeanUtils.copyProperties(req, user);
         user.setAccount(userService.maxAccount() + 1);
         user.setRole(RoleEnum.ADMIN.getCode());
-        user.setStatus(UserStatusEnum.NORMAL.getValue());
-        user.setCreateTime(LocalDateTime.now());
         user.setPassword(CodeTools.md5AndSalt(req.getPassword()));
         user.setAvatar(10);
+        user.setPlatform(req.getPlatform());
         return R.ok(userService.add(user));
     }
 

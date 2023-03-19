@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ent.sports.common.constant.LogTypeEnum;
+import com.ent.sports.common.tools.HttpTools;
 import com.ent.sports.entity.LogRecord;
 import com.ent.sports.mapper.LogRecordMapper;
 import com.ent.sports.pojo.req.log.LogPageReq;
@@ -21,6 +22,7 @@ public class LogRecordServiceImpl extends ServiceImpl<LogRecordMapper, LogRecord
     @Override
     public void insert(LogRecord po) {
         po.setCreateTime(LocalDateTime.now());
+        po.setRequestUrl(HttpTools.getRequest().getRequestURI());
         save(po);
     }
 
@@ -42,6 +44,9 @@ public class LogRecordServiceImpl extends ServiceImpl<LogRecordMapper, LogRecord
         }
         if (StringUtils.isNotBlank(po.getRequestUrl())) {
             queryWrapper.eq("request_url", po.getRequestUrl());
+        }
+        if (po.getPlatform() != null) {
+            queryWrapper.eq("platform", po.getPlatform());
         }
         queryWrapper.orderByDesc("create_time");
         iPage = page(iPage, queryWrapper);
@@ -66,6 +71,9 @@ public class LogRecordServiceImpl extends ServiceImpl<LogRecordMapper, LogRecord
         }
         if (StringUtils.isNotBlank(po.getRequestUrl())) {
             queryWrapper.eq("request_url", po.getRequestUrl());
+        }
+        if (po.getPlatform() != null) {
+            queryWrapper.eq("platform", po.getPlatform());
         }
         queryWrapper.orderByDesc("create_time");
         return page(iPage, queryWrapper);

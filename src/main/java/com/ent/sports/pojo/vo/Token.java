@@ -42,5 +42,10 @@ public class Token {
      */
     private Integer status;
 
+    /**
+     * 平台
+     */
+    private Integer platform;
+
 
 }

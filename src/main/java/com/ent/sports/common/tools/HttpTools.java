@@ -1,5 +1,6 @@
 package com.ent.sports.common.tools;
 
+import com.ent.sports.common.exception.DataException;
 import lombok.extern.slf4j.Slf4j;
 import net.ipip.ipdb.City;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -9,15 +10,25 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.HashMap;
+import java.util.Map;
 
 @Slf4j
 public class HttpTools {
+
+    private static final Map<String, Integer> urlMap = new HashMap<>();
 
     private static City city_DB;
 
     static {
         try {
+            //初始化ip解析地址信息
             city_DB = new City(new HttpTools().getClass().getResource("/").getPath() + "ipipfree.ipdb");
+
+            //初始化url和平台的对应关系
+            urlMap.put("127.0.0.1", 0);
+            urlMap.put("localhost", 0);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -31,6 +42,21 @@ public class HttpTools {
     public static HttpServletRequest getRequest() {
         ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         return servletRequestAttributes.getRequest();
+    }
+
+    /**
+     * 获取域名所在平台
+     *
+     * @return
+     */
+    public static int getPlatform() {
+        String url = getRequest().getServerName();
+        Integer platform = urlMap.get(url);
+        if (platform == null) {
+            log.error("未获取到域名:{},的平台", url);
+            throw new DataException("未找到该域名的平台");
+        }
+        return platform;
     }
 
     /**
@@ -114,12 +140,13 @@ public class HttpTools {
         if (cityArray != null && cityArray.length > 0) {
             return String.join("-", cityArray);
         }
-        log.error("ip:{}获取城市信息失败",ip);
+        log.error("ip:{}获取城市信息失败", ip);
         return "";
     }
 
     /**
      * 获取城市地址
+     *
      * @return
      */
     public static String getCityData() {
@@ -128,7 +155,7 @@ public class HttpTools {
         if (cityArray != null && cityArray.length > 0) {
             return String.join("-", cityArray);
         }
-        log.error("ip:{}获取城市信息失败",ip);
+        log.error("ip:{}获取城市信息失败", ip);
         return "";
     }
 

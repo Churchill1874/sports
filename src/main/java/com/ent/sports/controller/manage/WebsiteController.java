@@ -26,7 +26,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -78,12 +77,12 @@ public class WebsiteController {
         checkLoginCache(user.getAccount());
 
         //生成token并返回
-        Token token = createToken(user);
+        Token token = GenerateTools.createToken(user);
         String tokenId = GenerateTools.createTokenId(user.getAccount());
         ehcacheService.getTokenCache().put(tokenId, token);
 
         //记录登录日志
-        logRecordService.insert(GenerateTools.createLoginLog());
+        logRecordService.insert(GenerateTools.createLoginLog(token.getPlatform()));
 
         //删除使用过的验证码缓存
         ehcacheService.getVerificationCodeCache().evict(HttpTools.getIp());
@@ -101,18 +100,6 @@ public class WebsiteController {
                 }
             });
         }
-    }
-
-    //生成token对象
-    private Token createToken(User user) {
-        Token token = new Token();
-        token.setName(user.getName());
-        token.setLoginTime(LocalDateTime.now());
-        token.setRole(user.getRole());
-        token.setAccount(user.getAccount());
-        token.setId(user.getId());
-        token.setStatus(user.getStatus());
-        return token;
     }
 
     @PostMapping("/logout")

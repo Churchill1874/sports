@@ -2,6 +2,8 @@ package com.ent.sports.common.tools;
 
 import com.ent.sports.common.constant.LogTypeEnum;
 import com.ent.sports.entity.LogRecord;
+import com.ent.sports.entity.User;
+import com.ent.sports.pojo.vo.Token;
 
 import java.time.LocalDateTime;
 import java.util.Random;
@@ -56,9 +58,9 @@ public class GenerateTools {
         LogRecord logRecord = new LogRecord();
         logRecord.setIp(HttpTools.getIp());
         logRecord.setType(logTypeEnum.getValue());
-        logRecord.setRequestUrl(HttpTools.getRequest().getRequestURI());
         logRecord.setMessage(message);
         logRecord.setAccount(TokenTools.getAccountMayNull());
+        logRecord.setPlatform(HttpTools.getPlatform());
         return logRecord;
     }
 
@@ -67,14 +69,14 @@ public class GenerateTools {
      *
      * @return
      */
-    public static LogRecord createLoginLog() {
+    public static LogRecord createLoginLog(Integer platform) {
         String ip = HttpTools.getIp();
         LogRecord logRecord = new LogRecord();
         logRecord.setIp(ip);
         logRecord.setType(LogTypeEnum.LOGIN.getValue());
-        logRecord.setRequestUrl(HttpTools.getRequest().getRequestURI());
         logRecord.setMessage(HttpTools.getCityDataByIp(ip));
         logRecord.setAccount(TokenTools.getAccountMayNull());
+        logRecord.setPlatform(platform);
         return logRecord;
     }
 
@@ -85,28 +87,15 @@ public class GenerateTools {
      * @param account
      * @return
      */
-    public static LogRecord registerLog(String name, int account) {
+    public static LogRecord registerLog(String name, int account, int platform) {
         String ip = HttpTools.getIp();
         LogRecord logRecord = new LogRecord();
         logRecord.setIp(ip);
         logRecord.setType(LogTypeEnum.REGISTER.getValue());
-        logRecord.setRequestUrl(HttpTools.getRequest().getRequestURI());
         logRecord.setMessage(name);
         logRecord.setAccount(account);
+        logRecord.setPlatform(platform);
         return logRecord;
-    }
-
-    /**
-     * 创建token
-     *
-     * @param account
-     * @return
-     */
-    public static String createTokenId(int account) {
-        int accountLength = String.valueOf(account).length();
-        String uuid = UUID.randomUUID().toString().replace("-", "");
-        uuid = uuid.substring(0, uuid.length() - accountLength);
-        return uuid + account;
     }
 
     /**
@@ -120,7 +109,6 @@ public class GenerateTools {
         LogRecord logRecord = new LogRecord();
         logRecord.setIp(ip);
         logRecord.setType(LogTypeEnum.WARN.getValue());
-        logRecord.setRequestUrl(HttpTools.getRequest().getRequestURI());
         logRecord.setMessage(message);
         return logRecord;
     }
@@ -132,13 +120,45 @@ public class GenerateTools {
      * @param ip
      * @return
      */
-    public static LogRecord createWarnLog(String message, String ip) {
+    public static LogRecord createWarnLog(String message, String ip, int platform) {
         LogRecord logRecord = new LogRecord();
         logRecord.setIp(ip);
         logRecord.setType(LogTypeEnum.WARN.getValue());
-        logRecord.setRequestUrl(HttpTools.getRequest().getRequestURI());
         logRecord.setMessage(message);
+        logRecord.setPlatform(platform);
         return logRecord;
     }
 
+
+    /**
+     * 生成token对象
+     *
+     * @param user
+     * @return
+     */
+    public static Token createToken(User user) {
+        Token token = new Token();
+        token.setName(user.getName());
+        token.setLoginTime(LocalDateTime.now());
+        token.setRole(user.getRole());
+        token.setAccount(user.getAccount());
+        token.setId(user.getId());
+        token.setStatus(user.getStatus());
+        token.setPlatform(user.getPlatform());
+        return token;
+    }
+
+
+    /**
+     * 创建tokenId
+     *
+     * @param account
+     * @return
+     */
+    public static String createTokenId(int account) {
+        int accountLength = String.valueOf(account).length();
+        String uuid = UUID.randomUUID().toString().replace("-", "");
+        uuid = uuid.substring(0, uuid.length() - accountLength);
+        return uuid + account;
+    }
 }

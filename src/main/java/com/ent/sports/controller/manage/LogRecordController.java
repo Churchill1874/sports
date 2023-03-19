@@ -3,6 +3,7 @@ package com.ent.sports.controller.manage;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.api.R;
 import com.ent.sports.common.annotation.AdminLoginCheck;
+import com.ent.sports.common.tools.HttpTools;
 import com.ent.sports.entity.LogRecord;
 import com.ent.sports.pojo.req.log.LogPageReq;
 import com.ent.sports.service.LogRecordService;
@@ -29,6 +30,10 @@ public class LogRecordController {
     @PostMapping("/page")
     @ApiOperation(value = "分页日志", notes = "分页日志")
     public R<IPage<LogRecord>> page(@RequestBody @Valid LogPageReq req) {
+        Integer platform = HttpTools.getPlatform();
+        if (HttpTools.getPlatform() != 0){
+            req.setPlatform(platform);
+        }
         return R.ok(logRecordService.page(req));
     }
 

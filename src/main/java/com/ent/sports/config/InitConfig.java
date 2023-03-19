@@ -43,8 +43,7 @@ public class InitConfig {
           user.setPassword(CodeTools.md5AndSalt(PASSWORD));
           user.setAvatar(10);
           user.setRole(RoleEnum.SUPER_ADMIN.getCode());
-          user.setStatus(UserStatusEnum.NORMAL.getValue());
-          user.setCreateTime(LocalDateTime.now());
+          user.setPlatform(0);
           userService.add(user);
           log.info("成功创建超级管理员账号");
       }
