@@ -28,22 +28,14 @@ public class FootballMatch extends BaseInfo implements Serializable {
     @ApiModelProperty("主队")
     private String homeTeam;
 
-    @TableField("home_team_score")
-    @ApiModelProperty("主队分数")
-    private Integer homeTeamScore;
+    @TableField("visiting_team")
+    @ApiModelProperty("客队")
+    private String visitingTeam;
 
     @TableField("home_team_odds")
     @ApiModelProperty("主队胜赔率")
     @JsonSerialize(using = BigDecimalSerializer.class)
     private BigDecimal homeTeamOdds;
-
-    @TableField("visiting_team")
-    @ApiModelProperty("客队")
-    private String visitingTeam;
-
-    @TableField("visiting_team_score")
-    @ApiModelProperty("客队分数")
-    private Integer visitingTeamScore;
 
     @TableField("visiting_team_odds")
     @ApiModelProperty("客队胜赔率")
@@ -54,6 +46,10 @@ public class FootballMatch extends BaseInfo implements Serializable {
     @ApiModelProperty("平局赔率")
     @JsonSerialize(using = BigDecimalSerializer.class)
     private BigDecimal drawOdds;
+
+    @TableField("score")
+    @ApiModelProperty("比赛分数")
+    private String score;
 
     @TableField("result")
     @ApiModelProperty("结果 0平局 1主队胜 2客队胜")

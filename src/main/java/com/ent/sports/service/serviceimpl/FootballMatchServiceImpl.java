@@ -43,8 +43,7 @@ public class FootballMatchServiceImpl extends ServiceImpl<FootballMatchMapper, F
     @Transactional(rollbackFor = Exception.class)
     @CacheEvict(value = "footballMatch", allEntries = true)
     public boolean add(FootballMatch po) {
-        po.setHomeTeamScore(0);
-        po.setVisitingTeamScore(0);
+        po.setScore("0-0");
         po.setStatus(MatchStatusEnum.NOT_START.getValue());
         po.setCreateName(TokenTools.getToken().getName());
         po.setCreateTime(LocalDateTime.now());
@@ -62,8 +61,7 @@ public class FootballMatchServiceImpl extends ServiceImpl<FootballMatchMapper, F
     @Transactional(rollbackFor = Exception.class)
     @CacheEvict(value = "footballMatch", allEntries = true)
     public boolean updateFootballMatch(FootballMatch po) {
-        po.setHomeTeamScore(0);
-        po.setVisitingTeamScore(0);
+        po.setScore("0-0");
         po.setStatus(MatchStatusEnum.NOT_START.getValue());
         po.setCreateName(TokenTools.getToken().getName());
         return updateById(po);
