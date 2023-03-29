@@ -1,5 +1,7 @@
 package com.ent.sports.common.tools;
 
+import cn.hutool.Hutool;
+import cn.hutool.core.util.RandomUtil;
 import com.ent.sports.common.constant.LogTypeEnum;
 import com.ent.sports.entity.LogRecord;
 import com.ent.sports.entity.User;
@@ -13,18 +15,6 @@ import java.util.UUID;
  * 生产工具
  */
 public class GenerateTools {
-
-    /**
-     * 生成指定范围随机数
-     *
-     * @param start 最大值
-     * @param end   最小值
-     * @return
-     */
-    public static int getRandom(int start, int end) {
-        Random random = new Random();
-        return random.nextInt((end - start) + 1) + start;
-    }
 
     /**
      * 根据当前时间生成编号
@@ -43,7 +33,7 @@ public class GenerateTools {
      * 生成五位验证码
      */
     public static String getVerificationCode() {
-        int num = getRandom(10000, 99999);
+        int num = RandomUtil.randomInt(10000, 99999);
         return String.valueOf(num);
     }
 

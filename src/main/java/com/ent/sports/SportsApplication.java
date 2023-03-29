@@ -6,6 +6,9 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
+import java.io.PrintStream;
+import java.io.UnsupportedEncodingException;
+
 @EnableAsync //开启异步注解功能
 @EnableCaching //开启缓存
 @EnableScheduling //开启定时任务

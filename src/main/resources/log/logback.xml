@@ -1,5 +1,6 @@
 <!-- Logback configuration. See http://logback.qos.ch/manual/index.html -->
 <configuration scan="true" scanPeriod="2 seconds">
+    <property name="LOG_CHARSET" value="UTF-8" />
     <!--定义日志文件的存储地址-->
     <!--windows系统存在位置-->
     <property name="LOG_PATH" value="./logs" />
@@ -8,6 +9,7 @@
     <!-- 控制台输出 -->
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <charset>${LOG_CHARSET}</charset>
             <!--格式化输出：%d表示日期，%-5level：级别从左显示5个字符宽度，%t表示线程名，%msg：日志消息，%n是换行符-->
             <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level ${PID:-} --- [%t] %logger{50} - %msg%n</pattern>
         </encoder>
