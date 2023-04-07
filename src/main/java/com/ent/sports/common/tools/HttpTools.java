@@ -149,14 +149,9 @@ public class HttpTools {
      *
      * @return
      */
-    public static String getCityData() {
+    public static String getCityAddress() {
         String ip = HttpTools.getIp();
-        String[] cityArray = findCityByIp(ip);
-        if (cityArray != null && cityArray.length > 0) {
-            return String.join("-", cityArray);
-        }
-        log.error("ip:{}获取城市信息失败", ip);
-        return "";
+        return getCityDataByIp(ip);
     }
 
 }
