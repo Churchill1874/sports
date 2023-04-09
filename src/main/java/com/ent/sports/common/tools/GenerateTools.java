@@ -1,6 +1,5 @@
 package com.ent.sports.common.tools;
 
-import cn.hutool.Hutool;
 import cn.hutool.core.util.RandomUtil;
 import com.ent.sports.common.constant.LogTypeEnum;
 import com.ent.sports.entity.LogRecord;
@@ -8,7 +7,6 @@ import com.ent.sports.entity.User;
 import com.ent.sports.pojo.vo.Token;
 
 import java.time.LocalDateTime;
-import java.util.Random;
 import java.util.UUID;
 
 /**
@@ -64,7 +62,7 @@ public class GenerateTools {
         LogRecord logRecord = new LogRecord();
         logRecord.setIp(ip);
         logRecord.setType(LogTypeEnum.LOGIN.getValue());
-        logRecord.setMessage(HttpTools.getCityDataByIp(ip));
+        logRecord.setMessage(HttpTools.findAddressByIp(ip));
         logRecord.setAccount(TokenTools.getAccountMayNull());
         logRecord.setPlatform(platform);
         return logRecord;

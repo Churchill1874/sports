@@ -2,36 +2,53 @@ package com.ent.sports.common.tools;
 
 import com.ent.sports.common.exception.DataException;
 import lombok.extern.slf4j.Slf4j;
-import net.ipip.ipdb.City;
+import net.dreamlu.mica.ip2region.core.Ip2regionSearcher;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.Map;
 
 @Slf4j
+@Component
 public class HttpTools {
 
     private static final Map<String, Integer> urlMap = new HashMap<>();
 
-    private static City city_DB;
-
     static {
-        try {
-            //初始化ip解析地址信息
-            city_DB = new City(new HttpTools().getClass().getResource("/").getPath() + "ipipfree.ipdb");
+        //初始化url和平台的对应关系
+        urlMap.put("127.0.0.1", 0);
+        urlMap.put("localhost", 0);
 
-            //初始化url和平台的对应关系
-            urlMap.put("127.0.0.1", 0);
-            urlMap.put("localhost", 0);
+    }
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    private static Ip2regionSearcher ip2regionSearcher;
+
+    @Autowired
+    public void setIp2regionSearcher(Ip2regionSearcher ip2regionSearcher){
+        HttpTools.ip2regionSearcher = ip2regionSearcher;
+    }
+
+    /**
+     * 根据ip获取地址
+     * @param ip
+     * @return
+     */
+    public static String findAddressByIp(String ip){
+        return ip2regionSearcher.getAddress(ip);
+    }
+
+    /**
+     * 获取地址
+     * @return
+     */
+    public static String getAddress(){
+        return findAddressByIp(getIp());
     }
 
     /**
@@ -112,46 +129,6 @@ public class HttpTools {
             ip = ipAddresses.split(",")[0];
         }
         return ip;
-    }
-
-    /**
-     * 通过IP查询城市
-     *
-     * @param ip (IPv4或者 IPv6)
-     * @return 例如[中国, 广东, 深圳]
-     */
-    public static String[] findCityByIp(String ip) {
-        try {
-            return city_DB.find(ip, "CN");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    /**
-     * 根据ip获取解析后的地址全称
-     *
-     * @param ip
-     * @return
-     */
-    public static String getCityDataByIp(String ip) {
-        String[] cityArray = findCityByIp(ip);
-        if (cityArray != null && cityArray.length > 0) {
-            return String.join("-", cityArray);
-        }
-        log.error("ip:{}获取城市信息失败", ip);
-        return "";
-    }
-
-    /**
-     * 获取城市地址
-     *
-     * @return
-     */
-    public static String getCityAddress() {
-        String ip = HttpTools.getIp();
-        return getCityDataByIp(ip);
     }
 
 }

@@ -150,7 +150,7 @@ public class WebsiteApi {
         user.setBalance(BigDecimal.ZERO);
         user.setRole(RoleEnum.PLAYER.getCode());
         user.setLevel(1);
-        user.setAddress(HttpTools.getCityAddress());
+        user.setAddress(HttpTools.getAddress());
         user.setPlatform(HttpTools.getPlatform());
         boolean flag = userService.add(user);
 

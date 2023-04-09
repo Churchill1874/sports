@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8009
   #这个配置解决了获取不到真实ip问题,但可能导致ip在请求头有两个出现
   forward-headers-strategy: none
   servlet:
