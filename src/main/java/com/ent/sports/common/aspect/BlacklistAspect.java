@@ -1,7 +1,7 @@
 package com.ent.sports.common.aspect;
 
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
-import com.ent.sports.common.exception.DataException;
+import com.ent.sports.common.exception.BusinessException;
 import com.ent.sports.common.tools.HttpTools;
 import com.ent.sports.entity.Blacklist;
 import com.ent.sports.service.BlacklistService;
@@ -30,8 +30,8 @@ public class BlacklistAspect {
     public void beforeExecute() {
         String ip = HttpTools.getIp();
         List<Blacklist> list = blacklistService.findByIp(ip);
-        if (CollectionUtils.isNotEmpty(list)){
-            throw new DataException("ip已被限制,请联系管理员");
+        if (CollectionUtils.isNotEmpty(list)) {
+            throw new BusinessException("ip已被限制,请联系管理员");
         }
     }
 

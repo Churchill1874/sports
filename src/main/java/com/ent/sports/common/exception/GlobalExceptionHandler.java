@@ -48,8 +48,8 @@ public class GlobalExceptionHandler {
         return R.failed(e.getMessage()).setCode(e.getCode());
     }
 
-    @ExceptionHandler(DataException.class)
-    public R errorDataException(DataException e) {
+    @ExceptionHandler(BusinessException.class)
+    public R errorDataException(BusinessException e) {
         log.error("业务异常:{}", e);
         insertErrorLog(e.getMessage(),LogTypeEnum.OPERATION);
         return R.failed(e.getMessage()).setCode(e.getCode());

@@ -6,7 +6,6 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ent.sports.common.constant.UserStatusEnum;
-import com.ent.sports.common.tools.HttpTools;
 import com.ent.sports.entity.User;
 import com.ent.sports.mapper.UserMapper;
 import com.ent.sports.pojo.req.user.UserPageReq;
@@ -39,9 +38,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Transactional
     public boolean updateStatus(User po) {
         UpdateWrapper<User> updateWrapper = new UpdateWrapper<>();
-        updateWrapper.eq("id", po.getId());
-        updateWrapper.set("status", po.getStatus());
-        return update(updateWrapper);
+        updateWrapper.lambda()
+                .eq(User::getId, po.getId())
+                .set(User::getStatus, po.getStatus());
+        return this.update(updateWrapper);
     }
 
     @Override
@@ -53,7 +53,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean del(List<Long> idList) {
-        return removeByIds(idList);
+        return this.removeByIds(idList);
     }
 
     @Override
@@ -64,14 +64,16 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public User findByAccount(Integer account) {
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("account", account);
+        queryWrapper.lambda()
+                .eq(User::getAccount, account);
         return this.getOne(queryWrapper);
     }
 
     @Override
     public User findByName(String name) {
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("name", name);
+        queryWrapper.lambda()
+                .eq(User::getName, name);
         return this.getOne(queryWrapper);
     }
 
@@ -79,61 +81,64 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     public IPage<User> page(UserPageReq po) {
         IPage<User> iPage = new Page<>(po.getPageNum(), po.getPageSize());
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-        //网名
-        queryWrapper.like(StringUtils.isNotBlank(po.getName()), "name", po.getName());
-        //账号
-        queryWrapper.eq(po.getAccount() != null, "account", po.getAccount());
-        //手机号
-        queryWrapper.eq(StringUtils.isNotBlank(po.getPhoneNumber()), "phone_number", po.getPhoneNumber());
-        //真实姓名
-        queryWrapper.like(StringUtils.isNotBlank(po.getRealName()), "real_name", po.getRealName());
-        //等级
-        queryWrapper.eq(po.getLevel() != null, "level", po.getLevel());
-        //地址
-        queryWrapper.like(StringUtils.isNotBlank(po.getAddress()), "address", po.getAddress());
-        //状态
-        queryWrapper.eq(po.getStatus() != null, "status", po.getStatus());
-        //角色
-        queryWrapper.eq(po.getRole() != null, "role", po.getRole());
-        //平台
-        queryWrapper.eq(po.getPlatform() != null, "platform", po.getPlatform());
-        //创建时间
-        queryWrapper.orderByDesc("create_time");
-        return page(iPage, queryWrapper);
+        queryWrapper.lambda()
+                //网名
+                .like(StringUtils.isNotBlank(po.getName()), User::getName, po.getName())
+                //账号
+                .eq(po.getAccount() != null, User::getAccount, po.getAccount())
+                //手机号
+                .eq(StringUtils.isNotBlank(po.getPhone()), User::getPhone, po.getPhone())
+                //真实姓名
+                .like(StringUtils.isNotBlank(po.getRealName()), User::getRealName, po.getRealName())
+                //等级
+                .eq(po.getLevel() != null, User::getLevel, po.getLevel())
+                //地址
+                .like(StringUtils.isNotBlank(po.getAddress()), User::getAddress, po.getAddress())
+                //状态
+                .eq(po.getStatus() != null, User::getStatus, po.getStatus())
+                //角色
+                .eq(po.getRole() != null, User::getRole, po.getRole())
+                //平台
+                .eq(po.getPlatform() != null, User::getPlatform, po.getPlatform())
+                //创建时间
+                .orderByDesc(User::getCreateTime);
+        return this.page(iPage, queryWrapper);
     }
 
     @Override
     public List<User> getList(User po) {
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-        //网名
-        queryWrapper.eq(StringUtils.isNotBlank(po.getName()), "name", po.getName());
-        //账号
-        queryWrapper.eq(po.getAccount() != null, "account", po.getAccount());
-        //手机号
-        queryWrapper.eq(StringUtils.isNotBlank(po.getPhoneNumber()), "phone_number", po.getPhoneNumber());
-        //真实姓名
-        queryWrapper.eq(StringUtils.isNotBlank(po.getRealName()), "real_name", po.getRealName());
-        //等级
-        queryWrapper.eq(po.getLevel() != null, "level", po.getLevel());
-        //地址
-        queryWrapper.like(StringUtils.isNotBlank(po.getAddress()), "address", po.getAddress());
-        //状态
-        queryWrapper.eq(po.getStatus() != null, "status", po.getStatus());
-        //角色
-        queryWrapper.eq(po.getRole() != null, "role", po.getRole());
-        //平台
-        queryWrapper.eq(po.getPlatform() != null, "platform", po.getPlatform());
+        queryWrapper.lambda()
+                //网名
+                .eq(StringUtils.isNotBlank(po.getName()), User::getName, po.getName())
+                //账号
+                .eq(po.getAccount() != null, User::getAccount, po.getAccount())
+                //手机号
+                .eq(StringUtils.isNotBlank(po.getPhone()), User::getPhone, po.getPhone())
+                //真实姓名
+                .eq(StringUtils.isNotBlank(po.getRealName()), User::getRealName, po.getRealName())
+                //等级
+                .eq(po.getLevel() != null, User::getLevel, po.getLevel())
+                //地址
+                .like(StringUtils.isNotBlank(po.getAddress()), User::getAddress, po.getAddress())
+                //状态
+                .eq(po.getStatus() != null, User::getStatus, po.getStatus())
+                //角色
+                .eq(po.getRole() != null, User::getRole, po.getRole())
+                //平台
+                .eq(po.getPlatform() != null, User::getPlatform, po.getPlatform())
+                .orderByDesc(User::getCreateTime);
         //创建时间
-        queryWrapper.orderByDesc("create_time");
-        return list(queryWrapper);
+        return this.list(queryWrapper);
     }
 
     @Override
     public List<User> findByIds(List<Long> idList) {
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-        queryWrapper.in("id", idList);
-        queryWrapper.orderByDesc("create_time");
-        return list(queryWrapper);
+        queryWrapper.lambda()
+                .in(User::getId, idList)
+                .orderByDesc(User::getCreateTime);
+        return this.list(queryWrapper);
     }
 
     @Override
@@ -144,8 +149,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public User findByPhoneNumber(String phoneNumber) {
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("phone_number", phoneNumber);
-        return getOne(queryWrapper);
+        queryWrapper.lambda()
+                .eq(User::getPhone, phoneNumber);
+        return this.getOne(queryWrapper);
     }
 
 }

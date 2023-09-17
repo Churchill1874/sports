@@ -32,9 +32,9 @@ public class User extends BaseInfo implements Serializable {
     @ApiModelProperty("密码")
     private String password;
 
-    @TableField("phone_number")
+    @TableField("phone")
     @ApiModelProperty("手机号")
-    private String phoneNumber;
+    private String phone;
 
     @TableField("real_name")
     @ApiModelProperty("真实姓名")

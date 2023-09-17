@@ -1,12 +1,13 @@
 package com.ent.sports.controller.player;
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.extension.api.R;
 import com.ent.sports.common.constant.LogTypeEnum;
 import com.ent.sports.common.constant.RoleEnum;
 import com.ent.sports.common.exception.AccountOrPasswordException;
 import com.ent.sports.common.exception.AuthException;
-import com.ent.sports.common.exception.DataException;
+import com.ent.sports.common.exception.BusinessException;
 import com.ent.sports.common.tools.CodeTools;
 import com.ent.sports.common.tools.GenerateTools;
 import com.ent.sports.common.tools.HttpTools;
@@ -23,6 +24,7 @@ import com.ent.sports.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import net.dreamlu.mica.ip2region.impl.Ip2regionSearcherImpl;
 import net.sf.ehcache.Cache;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -59,7 +61,7 @@ public class WebsiteApi {
     public R<String> login(@RequestBody @Valid LoginPlayerReq req) {
         //校验请求参数
         if (req.getAccount() == null && StringUtils.isBlank(req.getName())) {
-            throw new DataException("网名或账号不能同时为空");
+            throw new BusinessException("网名或账号不能同时为空");
         }
 
         //校验图形验证码
@@ -188,7 +190,7 @@ public class WebsiteApi {
                     blacklist.setIp(ip);
                     blacklist.setRemarks("大量注册账号");
                     blacklistService.insert(blacklist);
-                    throw new DataException("注册次数已达上限,若仍需注册请联系管理员");
+                    throw new BusinessException("注册次数已达上限,若仍需注册请联系管理员");
                 }
 
             }
@@ -201,7 +203,7 @@ public class WebsiteApi {
     private void checkGraphicVerificationCode(String verificationCodeReq) {
         String verificationCode = ehcacheService.getVerificationCodeCache().get(HttpTools.getIp(), String.class);
         if (StringUtils.isBlank(verificationCode) || !verificationCode.equals(verificationCodeReq)) {
-            throw new DataException("验证码有误或已过期");
+            throw new BusinessException("验证码有误或已过期");
         }
     }
 
@@ -211,8 +213,14 @@ public class WebsiteApi {
     private void checkSmsVerificationCode(String phoneNumber, String verificationCodeReq) {
         String smsVerificationCode = ehcacheService.getSmsVerificationCodeCache().get(phoneNumber, String.class);
         if (StringUtils.isBlank(smsVerificationCode) || !smsVerificationCode.equals(verificationCodeReq)) {
-            throw new DataException("验证码有误或已过期");
+            throw new BusinessException("验证码有误或已过期");
         }
+    }
+
+    @PostMapping("/根据ip获取地址")
+    @ApiOperation(value = "根据ip获取地址")
+    public R<String> getAddressByIp(@RequestBody JSONObject json){
+        return R.ok(HttpTools.findAddressByIp(""));
     }
 
 }

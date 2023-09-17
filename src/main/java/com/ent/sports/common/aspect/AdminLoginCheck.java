@@ -32,10 +32,6 @@ public class AdminLoginCheck {
         }
     }
 
-/*    @After("loginCheck()")
-    public void afterCut(){
-
-    }*/
 
 
 }

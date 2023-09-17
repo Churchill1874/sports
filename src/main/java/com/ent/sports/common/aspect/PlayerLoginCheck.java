@@ -31,10 +31,5 @@ public class PlayerLoginCheck {
         }
     }
 
-/*    @After("loginCheck()")
-    public void afterCut(){
-
-    }*/
-
 
 }

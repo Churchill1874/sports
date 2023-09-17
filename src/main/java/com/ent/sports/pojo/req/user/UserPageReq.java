@@ -18,7 +18,7 @@ public class UserPageReq extends Page implements Serializable {
     private Integer account;
 
     @ApiModelProperty("手机号")
-    private String phoneNumber;
+    private String phone;
 
     @ApiModelProperty("真实姓名")
     private String realName;

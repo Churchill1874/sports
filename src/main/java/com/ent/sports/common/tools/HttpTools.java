@@ -1,6 +1,6 @@
 package com.ent.sports.common.tools;
 
-import com.ent.sports.common.exception.DataException;
+import com.ent.sports.common.exception.BusinessException;
 import lombok.extern.slf4j.Slf4j;
 import net.dreamlu.mica.ip2region.core.Ip2regionSearcher;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,7 +71,7 @@ public class HttpTools {
         Integer platform = urlMap.get(url);
         if (platform == null) {
             log.error("未获取到域名:{},的平台", url);
-            throw new DataException("未找到该域名的平台");
+            throw new BusinessException("未找到该域名的平台");
         }
         return platform;
     }
