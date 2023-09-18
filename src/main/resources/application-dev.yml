@@ -64,6 +64,10 @@ spring:
       max-request-size: 215MB
 
 mybatis-plus:
+  # 注册枚举类型处理器
+  # 例如，如果你的枚举类在 com.ent.sports.common.constant 包下，名为 UserStatusEnum，则配置如下：
+  # 这里的 "com.ent.sports.common.constant" 是你的枚举类所在的包路径
+  type-enums-package: com.ent.sports.common.constant.enums
   configuration:
     map-underscore-to-camel-case: true
     auto-mapping-behavior: full
@@ -75,6 +79,7 @@ mybatis-plus:
       logic-not-delete-value: 1
       logic-delete-value: 0
       field-strategy: IGNORED
+
 
 logging:
   config: classpath:log/logback.xml

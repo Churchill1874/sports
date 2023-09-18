@@ -1,18 +1,15 @@
 package com.ent.sports.controller.manage;
 
 import com.baomidou.mybatisplus.extension.api.R;
-import com.ent.sports.common.constant.LogTypeEnum;
+import com.ent.sports.common.constant.enums.LogTypeEnum;
 import com.ent.sports.common.tools.GenerateTools;
 import com.ent.sports.common.tools.HttpTools;
-import com.ent.sports.entity.Blacklist;
-import com.ent.sports.service.BlacklistService;
 import com.ent.sports.service.EhcacheService;
 import com.ent.sports.service.LogRecordService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.Cache;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

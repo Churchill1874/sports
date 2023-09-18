@@ -1,7 +1,7 @@
 package com.ent.sports.common.exception;
 
 import com.baomidou.mybatisplus.extension.api.R;
-import com.ent.sports.common.constant.LogTypeEnum;
+import com.ent.sports.common.constant.enums.LogTypeEnum;
 import com.ent.sports.common.tools.GenerateTools;
 import com.ent.sports.common.tools.HttpTools;
 import com.ent.sports.common.tools.TokenTools;

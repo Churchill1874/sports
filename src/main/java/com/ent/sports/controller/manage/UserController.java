@@ -4,8 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.api.R;
 import com.ent.sports.common.annotation.AdminLoginCheck;
 import com.ent.sports.common.annotation.SuperAdminLoginCheck;
-import com.ent.sports.common.constant.RoleEnum;
-import com.ent.sports.common.constant.UserStatusEnum;
+import com.ent.sports.common.constant.enums.RoleEnum;
 import com.ent.sports.common.tools.CodeTools;
 import com.ent.sports.common.tools.TokenTools;
 import com.ent.sports.entity.User;
@@ -15,7 +14,6 @@ import com.ent.sports.pojo.req.user.UserPageReq;
 import com.ent.sports.pojo.req.user.UserStatusUpdateReq;
 import com.ent.sports.service.UserService;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +23,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import java.time.LocalDateTime;
 
 @RestController
 @Api(tags = "用户")

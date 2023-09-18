@@ -1,5 +1,6 @@
 package com.ent.sports.pojo.vo;
 
+import com.ent.sports.common.constant.enums.UserStatusEnum;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -40,7 +41,7 @@ public class Token {
     /**
      * 状态 0禁用 1正常
      */
-    private Integer status;
+    private UserStatusEnum status;
 
     /**
      * 平台

@@ -2,6 +2,7 @@ package com.ent.sports.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.ent.sports.common.constant.enums.MatchStatusEnum;
 import com.ent.sports.config.BigDecimalSerializer;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -71,7 +72,7 @@ public class FootballMatch extends BaseInfo implements Serializable {
 
     @TableField("status")
     @ApiModelProperty("状态 0未开始 1比赛中 2比赛结束")
-    private Integer status;
+    private MatchStatusEnum status;
 
     @TableField("create_name")
     @ApiModelProperty("创建人")

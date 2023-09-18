@@ -1,6 +1,6 @@
 package com.ent.sports.common.aspect;
 
-import com.ent.sports.common.constant.RoleEnum;
+import com.ent.sports.common.constant.enums.RoleEnum;
 import com.ent.sports.common.exception.AuthException;
 import com.ent.sports.common.tools.TokenTools;
 import com.ent.sports.pojo.vo.Token;

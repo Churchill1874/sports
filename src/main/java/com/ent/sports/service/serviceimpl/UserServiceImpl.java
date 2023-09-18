@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.ent.sports.common.constant.UserStatusEnum;
+import com.ent.sports.common.constant.enums.UserStatusEnum;
 import com.ent.sports.entity.User;
 import com.ent.sports.mapper.UserMapper;
 import com.ent.sports.pojo.req.user.UserPageReq;
@@ -30,7 +30,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Transactional(rollbackFor = Exception.class)
     public boolean add(User po) {
         po.setCreateTime(LocalDateTime.now());
-        po.setStatus(UserStatusEnum.NORMAL.getValue());
+        po.setStatus(UserStatusEnum.NORMAL);
         return this.save(po);
     }
 

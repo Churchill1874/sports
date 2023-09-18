@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.ent.sports.common.constant.MatchStatusEnum;
+import com.ent.sports.common.constant.enums.MatchStatusEnum;
 import com.ent.sports.common.tools.TokenTools;
 import com.ent.sports.entity.FootballMatch;
 import com.ent.sports.mapper.FootballMatchMapper;
@@ -44,7 +44,7 @@ public class FootballMatchServiceImpl extends ServiceImpl<FootballMatchMapper, F
     @CacheEvict(value = "footballMatch", allEntries = true)
     public boolean add(FootballMatch po) {
         po.setScore("0-0");
-        po.setStatus(MatchStatusEnum.NOT_START.getValue());
+        po.setStatus(MatchStatusEnum.NOT_START);
         po.setCreateName(TokenTools.getToken().getName());
         po.setCreateTime(LocalDateTime.now());
         return save(po);
@@ -62,7 +62,7 @@ public class FootballMatchServiceImpl extends ServiceImpl<FootballMatchMapper, F
     @CacheEvict(value = "footballMatch", allEntries = true)
     public boolean updateFootballMatch(FootballMatch po) {
         po.setScore("0-0");
-        po.setStatus(MatchStatusEnum.NOT_START.getValue());
+        po.setStatus(MatchStatusEnum.NOT_START);
         po.setCreateName(TokenTools.getToken().getName());
         return updateById(po);
     }
@@ -84,7 +84,7 @@ public class FootballMatchServiceImpl extends ServiceImpl<FootballMatchMapper, F
     @Cacheable(value = "footballMatch", key = "'notStart'")
     public List<FootballMatch> getNotStart() {
         QueryWrapper<FootballMatch> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("status", MatchStatusEnum.NOT_START.getValue());
+        queryWrapper.eq("status", MatchStatusEnum.NOT_START);
         queryWrapper.orderByAsc("start_time");
         return list(queryWrapper);
     }
@@ -94,7 +94,7 @@ public class FootballMatchServiceImpl extends ServiceImpl<FootballMatchMapper, F
     public List<FootballMatch> get3DayFinished() {
         QueryWrapper<FootballMatch> queryWrapper = new QueryWrapper<>();
         queryWrapper.ge("start_time", LocalDateTime.now().minusDays(3));
-        queryWrapper.eq("status", MatchStatusEnum.FINSHED.getValue());
+        queryWrapper.eq("status", MatchStatusEnum.FINISHED);
         queryWrapper.orderByAsc("start_time");
         return list(queryWrapper);
     }
@@ -103,7 +103,7 @@ public class FootballMatchServiceImpl extends ServiceImpl<FootballMatchMapper, F
     @Cacheable(value = "footballMatch", key = "'getInProgress'")
     public List<FootballMatch> getInProgress() {
         QueryWrapper<FootballMatch> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("status", MatchStatusEnum.IN_PROGRESS.getValue());
+        queryWrapper.eq("status", MatchStatusEnum.IN_PROGRESS);
         queryWrapper.orderByAsc("start_time");
         return list(queryWrapper);
     }
@@ -113,7 +113,7 @@ public class FootballMatchServiceImpl extends ServiceImpl<FootballMatchMapper, F
     @CacheEvict(value = "footballMatch", allEntries = true)
     public boolean finished(List<Long> idList) {
         UpdateWrapper<FootballMatch> updateWrapper = new UpdateWrapper<>();
-        updateWrapper.set("status", MatchStatusEnum.FINSHED.getValue());
+        updateWrapper.set("status", MatchStatusEnum.FINISHED);
         updateWrapper.in("id", idList);
         return update(updateWrapper);
     }
@@ -128,9 +128,9 @@ public class FootballMatchServiceImpl extends ServiceImpl<FootballMatchMapper, F
 
         //获取到了比赛时间 状态还是未开始的比赛记录
         UpdateWrapper<FootballMatch> updateWrapper = new UpdateWrapper<>();
-        updateWrapper.set("status", MatchStatusEnum.IN_PROGRESS.getValue());
+        updateWrapper.set("status", MatchStatusEnum.IN_PROGRESS);
         updateWrapper.le("start_time", LocalDateTime.now());
-        updateWrapper.eq("status", MatchStatusEnum.NOT_START.getValue());
+        updateWrapper.eq("status", MatchStatusEnum.NOT_START);
         update(updateWrapper);
 
         log.info("修改足球赛事为以进行中状态,用时{}毫秒", System.currentTimeMillis() - startTime);
@@ -144,12 +144,12 @@ public class FootballMatchServiceImpl extends ServiceImpl<FootballMatchMapper, F
         //超过150分钟的比赛 如果状态还是进行中 则自动修改成结束状态
         long startTime = System.currentTimeMillis();
 
-        List<Integer> statusList = new ArrayList<>();
-        statusList.add(MatchStatusEnum.NOT_START.getValue());
-        statusList.add(MatchStatusEnum.IN_PROGRESS.getValue());
+        List<MatchStatusEnum> statusList = new ArrayList<>();
+        statusList.add(MatchStatusEnum.NOT_START);
+        statusList.add(MatchStatusEnum.IN_PROGRESS);
 
         UpdateWrapper<FootballMatch> updateWrapper = new UpdateWrapper<>();
-        updateWrapper.set("status", MatchStatusEnum.FINSHED.getValue());
+        updateWrapper.set("status", MatchStatusEnum.FINISHED);
         updateWrapper.in("status", statusList);
         updateWrapper.le("start_time", LocalDateTime.now().minusMinutes(150));
         update(updateWrapper);

@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.ent.sports.common.constant.LogTypeEnum;
+import com.ent.sports.common.constant.enums.LogTypeEnum;
 import com.ent.sports.common.tools.HttpTools;
 import com.ent.sports.entity.LogRecord;
 import com.ent.sports.mapper.LogRecordMapper;
@@ -85,7 +85,7 @@ public class LogRecordServiceImpl extends ServiceImpl<LogRecordMapper, LogRecord
         if (StringUtils.isNotBlank(ip)) {
             queryWrapper.eq("ip", ip);
         }
-        queryWrapper.eq("type", LogTypeEnum.REGISTER.getValue());
+        queryWrapper.eq("type", LogTypeEnum.REGISTER);
         return list(queryWrapper);
     }
 

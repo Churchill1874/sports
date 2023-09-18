@@ -1,5 +1,6 @@
 package com.ent.sports.pojo.req.user;
 
+import com.ent.sports.common.constant.enums.UserStatusEnum;
 import com.ent.sports.pojo.Id;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -14,6 +15,6 @@ public class UserStatusUpdateReq extends Id implements Serializable {
 
     @NotNull(message = "状态不能为空")
     @ApiModelProperty("1正常 0禁用")
-    private Integer status;
+    private UserStatusEnum status;
 
 }

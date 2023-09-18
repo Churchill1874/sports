@@ -3,8 +3,8 @@ package com.ent.sports.controller.player;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.extension.api.R;
-import com.ent.sports.common.constant.LogTypeEnum;
-import com.ent.sports.common.constant.RoleEnum;
+import com.ent.sports.common.constant.enums.LogTypeEnum;
+import com.ent.sports.common.constant.enums.RoleEnum;
 import com.ent.sports.common.exception.AccountOrPasswordException;
 import com.ent.sports.common.exception.AuthException;
 import com.ent.sports.common.exception.BusinessException;
@@ -24,7 +24,6 @@ import com.ent.sports.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import net.dreamlu.mica.ip2region.impl.Ip2regionSearcherImpl;
 import net.sf.ehcache.Cache;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -180,7 +179,7 @@ public class WebsiteApi {
 
                 //校验注册次数过限警告次数,是否大于等于20次,如果大于将ip拉黑
                 LogRecord logRecord = new LogRecord();
-                logRecord.setType(LogTypeEnum.WARN.getValue());
+                logRecord.setType(LogTypeEnum.WARN);
                 logRecord.setIp(ip);
                 logRecord.setMessage(warnContent);
                 List<LogRecord> registerWarnLogListRecord = logRecordService.getList(logRecord);

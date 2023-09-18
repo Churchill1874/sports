@@ -1,7 +1,7 @@
 package com.ent.sports.controller.player;
 
 import com.baomidou.mybatisplus.extension.api.R;
-import com.ent.sports.common.constant.LogTypeEnum;
+import com.ent.sports.common.constant.enums.LogTypeEnum;
 import com.ent.sports.common.tools.GenerateTools;
 import com.ent.sports.common.tools.HttpTools;
 import com.ent.sports.service.EhcacheService;
@@ -12,7 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j

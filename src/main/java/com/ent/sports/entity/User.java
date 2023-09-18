@@ -2,6 +2,7 @@ package com.ent.sports.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.ent.sports.common.constant.enums.UserStatusEnum;
 import com.ent.sports.config.BigDecimalSerializer;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -55,7 +56,7 @@ public class User extends BaseInfo implements Serializable {
 
     @TableField("status")
     @ApiModelProperty("状态 1正常 0禁用")
-    private Integer status;
+    private UserStatusEnum status;
 
     @TableField("avatar")
     @ApiModelProperty("头像")

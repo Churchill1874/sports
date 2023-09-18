@@ -1,7 +1,7 @@
 package com.ent.sports.common.aspect;
 
-import com.ent.sports.common.constant.RoleEnum;
-import com.ent.sports.common.constant.UserStatusEnum;
+import com.ent.sports.common.constant.enums.RoleEnum;
+import com.ent.sports.common.constant.enums.UserStatusEnum;
 import com.ent.sports.common.exception.AuthException;
 import com.ent.sports.common.tools.TokenTools;
 import com.ent.sports.pojo.vo.Token;
@@ -26,7 +26,7 @@ public class PlayerLoginCheck {
     @Before("playerLoginCheck()")
     public void beforeCut(JoinPoint joinPoint) {
         Token token = TokenTools.getToken();
-        if (token.getRole() != RoleEnum.PLAYER.getCode() || token.getStatus() == UserStatusEnum.DISABLE.getValue()) {
+        if (token.getRole() != RoleEnum.PLAYER.getCode() || token.getStatus() == UserStatusEnum.DISABLE) {
             throw new AuthException();
         }
     }
