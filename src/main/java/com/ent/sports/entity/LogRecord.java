@@ -24,7 +24,6 @@ public class LogRecord extends BaseInfo implements Serializable {
     private static final long serialVersionUID = 1887087031260287312L;
 
     @TableField("type")
-    @ApiModelProperty("日志类型 1异常日志 2操作日志 3登录日志 4请求统计日志")
     private LogTypeEnum type;
 
     @TableField("message")

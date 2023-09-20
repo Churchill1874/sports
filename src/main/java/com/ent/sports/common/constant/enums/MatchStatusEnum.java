@@ -29,7 +29,7 @@ public enum MatchStatusEnum {
 
     @Override
     public String toString() {
-        return this.name + ":" + this.code;
+        return this.code + ":" + this.name;
     }
 
 }
